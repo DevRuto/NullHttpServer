@@ -8,6 +8,15 @@
 
 class packet {
 
+public:
+    packet();
+    packet(const char *);
+    void command(const char *);
+    const char *command();
+
+private:
+    const char *cmd = "\0";
+
 };
 
 

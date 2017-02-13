@@ -1,0 +1,8 @@
+
+# CLION IGNORES
+.idea
+cmake-*
+obj
+bin
+*.depend
+*.layout
