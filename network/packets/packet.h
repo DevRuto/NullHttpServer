@@ -9,14 +9,16 @@
 class packet {
 
 public:
-    packet();
     packet(const char *);
-    void command(const char *);
-    const char *command();
+    packet();
+
+    void payload(const char *);
+    const char *payload();
+    unsigned int getPayloadLength();
 
 private:
-    const char *cmd = "\0";
-
+    const char *p_payload = 0;
+    unsigned int length = 0;
 };
 
 

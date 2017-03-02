@@ -6,12 +6,14 @@
 #define NULLHTTPSERVER_PARSER_H
 
 #include "../packets/httppacket.h"
+#include "../httphandler.h"
+#include "../nr_socket.h"
 
 class parser {
 public:
-    void (*packethandler)(httppacket);
+    httphandler *packethandler;
     void parse();
-    parser(void (*handler)(httppacket)) {
+    parser(httphandler *handler) {
         this->packethandler = handler;
     }
 

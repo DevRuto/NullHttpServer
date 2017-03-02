@@ -9,25 +9,24 @@
 #include <map>
 #include "packet.h"
 
-class httppacket : packet {
+class httppacket : public packet {
 
 public:
     httppacket();
     httppacket(const char *);
 
     char *serialize();
-    void addheader(const char *, const char *);
-    void removeheader(const char *);
-    const char *getheader(const char *);
-
-    void payload(const char *);
-    const char *payload();
+    void command(const char *);
+    const char *command();
+    void addheader(char *, const char *);
+    void removeheader(char *);
+    const char *getheader(char *);
 
 private:
+    const char *cmd = NULL;
     int totallength = 0;
     std::map<const char *, const char *> headers;
     std::map<const char *, const char *>::iterator iterator;
-    const char *p_payload = NULL;
 };
 
 

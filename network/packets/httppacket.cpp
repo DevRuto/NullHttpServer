@@ -3,33 +3,52 @@
 //
 
 #include <cstring>
+#include <cstdio>
 #include "httppacket.h"
 
-void httppacket::addheader(const char *key, const char *value) {
-    this->headers[key] = value;
-    this->totallength += (strlen(key) + strlen(value) + 4);
+httppacket::httppacket() : packet() {
+
 }
 
-void httppacket::removeheader(const char *key) {
+httppacket::httppacket(const char *cmd) {
+    this->command(cmd);
+}
+
+
+void httppacket::addheader(char *key, const char *value) {
+    while (*key = tolower(*key)) {
+        ++key;
+    }
+    this->headers[key] = key;
+    this->totallength += (strlen(key) + strlen(value) + 4);
+    printf("Add Header: %s-%s\n", key, value);
+}
+
+void httppacket::removeheader(char *key) {
+    while (*key = tolower(*key)) {
+        ++key;
+    }
     if ((iterator = this->headers.find(key)) != this->headers.end())
         return;
     this->totallength -= (strlen(key) + strlen(iterator->second) + 4); // delimeter and crlf
     this->headers.erase(iterator);
 }
 
-const char *httppacket::getheader(const char *key) {
+const char *httppacket::getheader(char *key) {
+    while (*key = tolower(*key)) {
+        ++key;
+    }
     if ((iterator = this->headers.find(key)) != this->headers.end())
         return iterator->second;
     return NULL;
 }
 
-void httppacket::payload(const char *payload) {
-    this->p_payload = payload;
-    this->totallength += strlen(payload);
+void httppacket::command(const char *command) {
+    this->cmd = command;
 }
 
-const char *httppacket::payload() {
-    return this->p_payload;
+const char *httppacket::command() {
+    return this->cmd;
 }
 
 char *httppacket::serialize() {
@@ -59,15 +78,11 @@ char *httppacket::serialize() {
     }
     buffer[index++] = '\r';
     buffer[index++] = '\n';
-    if (p_payload) {
-        for (i = 0; i < strlen(p_payload); ++i) {
-            buffer[index++] = p_payload[i];
+    if (payload()) {
+        for (i = 0; i < strlen(payload()); ++i) {
+            buffer[index++] = payload()[i];
         }
     }
     buffer[index] = '\0';
     return buffer;
-}
-
-httppacket::httppacket(const char *cmd) : packet(cmd) {
-
 }
